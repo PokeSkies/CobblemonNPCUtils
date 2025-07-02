@@ -21,9 +21,17 @@ More information on configuration can be found on the [Wiki](https://github.com/
 
 
 ## Commands/Permissions
-| Command                       | Description                                        | Permission                           |
-|-------------------------------|----------------------------------------------------|--------------------------------------|
-| /npcutils reload | Reload the Mod                                     | cobblemonnpcutils.command.reload |
+| Command                             | Description                                                                 | Permission                         |
+|-------------------------------------|-----------------------------------------------------------------------------|------------------------------------|
+| /npcutils reload                    | Reload the Mod                                                              | cobblemonnpcutils.command.reload   |
+| /npcutils location create \<id>     | Creates a location preset using the provided ID at your current location    | cobblemonnpcutils.command.location |
+| /npcutils location delete \<id>     | Deletes a location preset using the provided ID                             | cobblemonnpcutils.command.location |
+| /npcutils location teleport \<id>   | Teleports to the provided location preset                                   | cobblemonnpcutils.command.location |
+| /npcutils item create \<id>         | Creates a item preset using the provided ID and the item in your hand       | cobblemonnpcutils.command.item     |
+| /npcutils item delete \<id>         | Deletes a item preset using the provided ID                                 | cobblemonnpcutils.command.item     |
+| /npcutils item give \<id>           | (Debugging) Give yourself the specified item preset                         | cobblemonnpcutils.command.item     |
+| /npcutils item take \<id> \[amount] | (Debugging) Take an amount of the specified item preset from your inventory | cobblemonnpcutils.command.item     |
+| /npcutils item count \<id>          | (Debugging) Count the amount of the specified item preset in your inventory | cobblemonnpcutils.command.item     |
 
 ## Planned Features
 - **Please submit suggestions!**
