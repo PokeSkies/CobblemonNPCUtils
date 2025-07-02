@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblemonnpcutils",
+  "version": "${version}",
+  "name": "CobblemonNPCUtils",
+  "description": "Template mod for PokeSkies",
+  "authors": [
+    "AmoAster",
+    "Stampede"
+  ],
+  "entrypoints": {
+    "main": [
+      "com.pokeskies.cobblemonnpcutils.CobblemonNPCUtils"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.21.1"
+  },
+  "mixins": ["cobblemonnpcutils.mixins.json"],
+  "accessWidener": "cobblemonnpcutils.accesswidener"
+}

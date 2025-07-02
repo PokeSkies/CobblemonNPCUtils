@@ -1,0 +1,11 @@
+{
+  "example_item": {
+    "item": "minecraft:diamond_sword",
+    "amount": 1,
+    "name": "<blue><b>Example Sword",
+    "lore": [
+      "<gray><!i>This is an example item!",
+      "<gray><!i>It can be used to demonstrate item functionality."
+    ]
+  }
+}
