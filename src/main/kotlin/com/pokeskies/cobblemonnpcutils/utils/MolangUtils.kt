@@ -39,7 +39,7 @@ object MolangUtils {
             }
 
             // Economy Functions!
-            map["deposit_economy"] = Function { params -> // q.player.give_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
+            map["deposit_economy"] = Function { params -> // q.player.deposit_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
                 val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
                 val amount = params.getDouble(1)
                 val currency = params.getStringOrNull(2)

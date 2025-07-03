@@ -6,9 +6,9 @@ A Fabric server-sided mod that adds useful utility features for working with Cob
 More information on configuration can be found on the [Wiki](https://github.com/PokeSkies/CobblemonNPCUtils/wiki)!
 
 ## Features
-- Item Presets and 4x Functions
-- Location Presets and 1x Functions
-- 4x Economy Functions
+- Item Presets and 4 related Molang Functions
+- Location Presets and 1 related Molang Functions
+- 4 Economy Molang Functions
 
 ## Installation
 1. Download the latest version of the mod from [Modrinth](https://modrinth.com/mod/cobblemonnpcutils).
