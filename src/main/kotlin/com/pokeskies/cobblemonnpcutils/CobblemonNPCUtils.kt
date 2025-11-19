@@ -1,34 +1,34 @@
 package com.pokeskies.cobblemonnpcutils
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import java.io.IOException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import net.minecraft.nbt.NbtOps
-import net.minecraft.nbt.Tag
-import net.minecraft.resources.RegistryOps
 import com.pokeskies.cobblemonnpcutils.commands.BaseCommand
 import com.pokeskies.cobblemonnpcutils.config.ConfigManager
 import com.pokeskies.cobblemonnpcutils.economy.EconomyType
 import com.pokeskies.cobblemonnpcutils.economy.IEconomyService
+import com.pokeskies.cobblemonnpcutils.placeholders.PlaceholderManager
 import com.pokeskies.cobblemonnpcutils.utils.MolangUtils
 import com.pokeskies.cobblemonnpcutils.utils.Utils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.loader.api.FabricLoader
-import net.fabricmc.api.ModInitializer
 import net.kyori.adventure.platform.fabric.FabricServerAudiences
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtOps
+import net.minecraft.nbt.Tag
+import net.minecraft.resources.RegistryOps
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CobblemonNPCUtils : ModInitializer {
     companion object {
@@ -86,6 +86,7 @@ class CobblemonNPCUtils : ModInitializer {
             this.server = server
             this.nbtOpts = server.registryAccess().createSerializationContext(NbtOps.INSTANCE)
 
+            PlaceholderManager.init()
             MolangUtils.setupMolang()
         })
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->

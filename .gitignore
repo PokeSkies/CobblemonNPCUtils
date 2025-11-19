@@ -5,3 +5,4 @@
 /buildSrc/build/
 /buildSrc/.gradle/
 *.iml
+/.kotlin/

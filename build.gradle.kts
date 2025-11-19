@@ -3,8 +3,6 @@
 plugins {
     java
     idea
-    id("quiet-fabric-loom") version ("1.9-SNAPSHOT")
-    kotlin("jvm") version ("2.1.0")
     id("quiet-fabric-loom") version ("1.10-SNAPSHOT")
     kotlin("jvm") version ("2.2.0")
     `maven-publish`
@@ -82,13 +80,12 @@ dependencies {
     modImplementation("me.lucko:fabric-permissions-api:0.3.1")
 
     // GUI libraries
-//    modImplementation("ca.landonjw.gooeylibs:fabric-api-repack:3.1.0-1.21.1-SNAPSHOT@jar")
-//    modImplementation("eu.pb4:sgui:1.6.1+1.21.1")
+    modImplementation("eu.pb4:sgui:1.6.1+1.21.1")
 
     // Placeholder Mods
-//    modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
-//    modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.3")
-//    modImplementation("eu.pb4:placeholder-api:2.4.1+1.21")
+    modImplementation("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
+    modImplementation("io.github.miniplaceholders:miniplaceholders-kotlin-ext:2.2.3")
+    modImplementation("eu.pb4:placeholder-api:2.4.1+1.21")
 
     // Impactor Libraries
     modImplementation("net.impactdev.impactor:common:5.3.0+1.21.1-SNAPSHOT")

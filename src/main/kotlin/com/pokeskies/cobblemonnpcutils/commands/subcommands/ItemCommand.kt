@@ -7,7 +7,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode
 import com.pokeskies.cobblemonnpcutils.CobblemonNPCUtils
 import com.pokeskies.cobblemonnpcutils.api.CobblemonNPCUtilsAPI
 import com.pokeskies.cobblemonnpcutils.config.ConfigManager
-import com.pokeskies.cobblemonnpcutils.config.ItemDefinition
 import com.pokeskies.cobblemonnpcutils.utils.SubCommand
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.kyori.adventure.text.Component

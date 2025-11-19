@@ -2,12 +2,15 @@ package com.pokeskies.cobblemonnpcutils.utils
 
 import com.bedrockk.molang.runtime.MoParams
 import com.bedrockk.molang.runtime.value.DoubleValue
+import com.bedrockk.molang.runtime.value.StringValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions
 import com.cobblemon.mod.common.util.getIntOrNull
 import com.cobblemon.mod.common.util.getStringOrNull
 import com.pokeskies.cobblemonnpcutils.CobblemonNPCUtils
 import com.pokeskies.cobblemonnpcutils.api.CobblemonNPCUtilsAPI
 import com.pokeskies.cobblemonnpcutils.economy.EconomyType
+import com.pokeskies.cobblemonnpcutils.placeholders.PlaceholderManager
+import com.pokeskies.cobblemonnpcutils.placeholders.PlaceholderMods
 import net.minecraft.server.level.ServerPlayer
 import java.util.function.Function
 
@@ -73,6 +76,25 @@ object MolangUtils {
                 val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
 
                 return@Function DoubleValue(service.balance(player as ServerPlayer, currency ?: ""))
+            }
+
+            // Placeholders
+            map["parse_placeholders"] = Function { params -> // q.player.balance_economy("<STRING>"[, "<SERVICE>"])
+                // Gather an list of services to use, if none are specified, use all in PlaceholderMods
+                val mods = params.getStringOrNull(1)
+                    ?.split(",")
+                    ?.asSequence()
+                    ?.map(String::trim)
+                    ?.filter(String::isNotEmpty)
+                    ?.mapNotNull(PlaceholderMods::valueOfAnyCase)
+                    ?.toList()
+                    ?.takeIf { it.isNotEmpty() }
+                    ?: PlaceholderMods.entries
+
+                val providers = mods.map(PlaceholderManager::getServiceForType)
+                var value = params.getString(0)
+                providers.forEach { value = it.parsePlaceholders(value, player as ServerPlayer) }
+                StringValue(value)
             }
 
             return@add map
