@@ -79,7 +79,7 @@ object MolangUtils {
             }
 
             // Placeholders
-            map["parse_placeholders"] = Function { params -> // q.player.balance_economy("<STRING>"[, "<SERVICE>"])
+            map["parse_placeholders"] = Function { params -> // q.player.parse_placeholders("<STRING>"[, "<SERVICE>"])
                 // Gather an list of services to use, if none are specified, use all in PlaceholderMods
                 val mods = params.getStringOrNull(1)
                     ?.split(",")

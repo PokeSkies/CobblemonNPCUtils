@@ -86,7 +86,7 @@ object CobblemonNPCUtilsAPI {
             for ((slot, stack) in slots) {
                 if (amountTaken >= amountToTake) break
                 if (stack.count > amountToTake) {
-                    player.inventory.setItem(slot, stack.split(amountToTake))
+                    player.inventory.setItem(slot, stack.split(stack.count - amountToTake))
                     amountTaken += amountToTake
                 } else {
                     player.inventory.setItem(slot, ItemStack.EMPTY)
