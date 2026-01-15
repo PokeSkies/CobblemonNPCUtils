@@ -15,12 +15,12 @@ import kotlin.jvm.optionals.getOrNull
 
 object CobblemonNPCUtilsAPI {
     // Item Definition Stuff!
-    fun giveItem(player: Player, itemId: String, amountOverride: Int? = null, shouldDrop: Boolean = false): Boolean {
+    fun giveDefinedItem(player: Player, itemId: String, amountOverride: Int? = null, shouldDrop: Boolean = false): Boolean {
         val def = getItemDefinition(itemId) ?: return false
-        return giveItem(player, def, amountOverride, shouldDrop)
+        return giveDefinedItem(player, def, amountOverride, shouldDrop)
     }
 
-    fun giveItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null, shouldDrop: Boolean = false): Boolean {
+    fun giveDefinedItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null, shouldDrop: Boolean = false): Boolean {
         val stack = itemDef.createItemStack(amountOverride)
         if (shouldDrop) {
             player.inventory.placeItemBackInInventory(stack)
@@ -30,22 +30,22 @@ object CobblemonNPCUtilsAPI {
     }
 
     // Has the specified item with the configured amount or override amount
-    fun hasItem(player: Player, itemId: String, amountOverride: Int? = null): Boolean {
+    fun hasDefinedItem(player: Player, itemId: String, amountOverride: Int? = null): Boolean {
         val def = getItemDefinition(itemId) ?: return false
-        return hasItem(player, def, amountOverride)
+        return hasDefinedItem(player, def, amountOverride)
     }
 
     // Has the specified item with the configured amount or override amount
-    fun hasItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null): Boolean {
-        return countItem(player, itemDef) >= (amountOverride ?: itemDef.amount)
+    fun hasDefinedItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null): Boolean {
+        return countDefinedItem(player, itemDef) >= (amountOverride ?: itemDef.amount)
     }
 
-    fun countItem(player: Player, itemId: String): Int {
+    fun countDefinedItem(player: Player, itemId: String): Int {
         val def = getItemDefinition(itemId) ?: return 0
-        return countItem(player, def)
+        return countDefinedItem(player, def)
     }
 
-    fun countItem(player: Player, itemDef: ItemDefinition): Int {
+    fun countDefinedItem(player: Player, itemDef: ItemDefinition): Int {
         val stack = itemDef.createItemStack()
         var count = 0
 
@@ -60,13 +60,13 @@ object CobblemonNPCUtilsAPI {
     }
 
     // Will take the specified item with the configured amount or override amount, but ONLY if the amount is reached
-    fun takeItem(player: Player, itemId: String, amountOverride: Int? = null): Boolean {
+    fun takeDefinedItem(player: Player, itemId: String, amountOverride: Int? = null): Boolean {
         val def = getItemDefinition(itemId) ?: return false
-        return takeItem(player, def, amountOverride)
+        return takeDefinedItem(player, def, amountOverride)
     }
 
     // Will take the specified item with the configured amount or override amount, but ONLY if the amount is reached
-    fun takeItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null): Boolean {
+    fun takeDefinedItem(player: Player, itemDef: ItemDefinition, amountOverride: Int? = null): Boolean {
         val stack = itemDef.createItemStack()
         val slots: MutableMap<Int, ItemStack> = mutableMapOf()
 

@@ -4,6 +4,7 @@ import com.bedrockk.molang.runtime.MoParams
 import com.bedrockk.molang.runtime.value.DoubleValue
 import com.bedrockk.molang.runtime.value.StringValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions
+import com.cobblemon.mod.common.util.getBooleanOrNull
 import com.cobblemon.mod.common.util.getIntOrNull
 import com.cobblemon.mod.common.util.getStringOrNull
 import com.pokeskies.cobblemonnpcutils.CobblemonNPCUtils
@@ -24,16 +25,29 @@ object MolangUtils {
             val map = hashMapOf<String, Function<MoParams, Any>>()
             // Item Functions!
             map["give_utils_item"] = Function { params -> // q.player.give_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.giveItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.giveDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
             }
             map["has_utils_item"] = Function { params -> // q.player.has_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.hasItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.hasDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
             }
             map["count_utils_item"] = Function { params -> // q.player.check_utils_item("<ITEM_DEF_ID>")
-                return@Function DoubleValue(CobblemonNPCUtilsAPI.countItem(player, params.getString(0)))
+                return@Function DoubleValue(CobblemonNPCUtilsAPI.countDefinedItem(player, params.getString(0)))
             }
             map["take_utils_item"] = Function { params -> // q.player.take_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.takeItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.takeDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+            }
+
+            map["give_item"] = Function { params -> // q.player.give_item("<ITEM_DEF>"[, <AMOUNT>, <SHOULD_DROP>])
+                return@Function DoubleValue(if (GenericItemUtils.giveGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
+            }
+            map["has_item"] = Function { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
+                return@Function DoubleValue(if (GenericItemUtils.hasGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
+            }
+            map["count_item"] = Function { params -> // q.player.count_item("<ITEM_DEF>"[, <STRICT>])
+                return@Function DoubleValue(GenericItemUtils.countGenericItem(player, params.getString(0), params.getBooleanOrNull(1) ?: false))
+            }
+            map["take_item"] = Function { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
+                return@Function DoubleValue(if (GenericItemUtils.takeGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
             }
 
             // Teleport Functions!

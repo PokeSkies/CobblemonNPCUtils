@@ -21,7 +21,7 @@ class ItemCommand : SubCommand {
             .requires(Permissions.require("${CobblemonNPCUtils.MOD_ID}.command.item", 2))
             .then(Commands.literal("give")
                 .then(Commands.argument("id", StringArgumentType.string())
-                    .suggests { context, builder ->
+                    .suggests { _, builder ->
                         SharedSuggestionProvider.suggest(ConfigManager.ITEM_DEFINITIONS.keys, builder)
                     }
                     .executes { ctx ->
@@ -31,7 +31,7 @@ class ItemCommand : SubCommand {
             )
             .then(Commands.literal("count")
                 .then(Commands.argument("id", StringArgumentType.string())
-                    .suggests { context, builder ->
+                    .suggests { _, builder ->
                         SharedSuggestionProvider.suggest(ConfigManager.ITEM_DEFINITIONS.keys, builder)
                     }
                     .executes { ctx ->
@@ -41,7 +41,7 @@ class ItemCommand : SubCommand {
             )
             .then(Commands.literal("take")
                 .then(Commands.argument("id", StringArgumentType.string())
-                    .suggests { context, builder ->
+                    .suggests { _, builder ->
                         SharedSuggestionProvider.suggest(ConfigManager.ITEM_DEFINITIONS.keys, builder)
                     }
                     .then(Commands.argument("amount", IntegerArgumentType.integer(1))
@@ -63,7 +63,7 @@ class ItemCommand : SubCommand {
             )
             .then(Commands.literal("delete")
                 .then(Commands.argument("id", StringArgumentType.string())
-                    .suggests { context, builder ->
+                    .suggests { _, builder ->
                         SharedSuggestionProvider.suggest(ConfigManager.ITEM_DEFINITIONS.keys, builder)
                     }
                     .executes { ctx ->
@@ -89,7 +89,7 @@ class ItemCommand : SubCommand {
                 return 0
             }
 
-            if (!CobblemonNPCUtilsAPI.giveItem(player, item)) {
+            if (!CobblemonNPCUtilsAPI.giveDefinedItem(player, item)) {
                 ctx.source.sendMessage(Component.text("Failed to give item '$itemId' to player '${player.gameProfile.name}'.", NamedTextColor.RED))
                 return 0
             }
@@ -112,7 +112,7 @@ class ItemCommand : SubCommand {
                 return 0
             }
 
-            val count = CobblemonNPCUtilsAPI.countItem(player, item)
+            val count = CobblemonNPCUtilsAPI.countDefinedItem(player, item)
 
             if (count <= 0) {
                 ctx.source.sendMessage(Component.text("Player '${player.gameProfile.name}' does not have the item '$itemId'.", NamedTextColor.RED))
@@ -133,7 +133,7 @@ class ItemCommand : SubCommand {
                 return 0
             }
 
-            if (CobblemonNPCUtilsAPI.takeItem(player, itemId, amount)) {
+            if (CobblemonNPCUtilsAPI.takeDefinedItem(player, itemId, amount)) {
                 ctx.source.sendMessage(Component.text("Successfully took $amount of item '$itemId' from player '${player.gameProfile.name}'.", NamedTextColor.GREEN))
             } else {
                 ctx.source.sendMessage(Component.text("Failed to take $amount of item '$itemId' from player '${player.gameProfile.name}'.", NamedTextColor.RED))
