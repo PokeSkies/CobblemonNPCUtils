@@ -4,6 +4,7 @@ import com.bedrockk.molang.runtime.MoParams
 import com.bedrockk.molang.runtime.value.DoubleValue
 import com.bedrockk.molang.runtime.value.StringValue
 import com.cobblemon.mod.common.api.molang.MoLangFunctions
+import com.cobblemon.mod.common.api.molang.function.PlayerMoLangFunctions
 import com.cobblemon.mod.common.util.getBooleanOrNull
 import com.cobblemon.mod.common.util.getIntOrNull
 import com.cobblemon.mod.common.util.getStringOrNull
@@ -21,97 +22,96 @@ object MolangUtils {
     }
 
     private fun setupPlayerExtensions() {
-        MoLangFunctions.playerFunctions.add { player ->
-            val map = hashMapOf<String, Function<MoParams, Any>>()
-            // Item Functions!
-            map["give_utils_item"] = Function { params -> // q.player.give_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.giveDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
-            }
-            map["has_utils_item"] = Function { params -> // q.player.has_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.hasDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
-            }
-            map["count_utils_item"] = Function { params -> // q.player.check_utils_item("<ITEM_DEF_ID>")
-                return@Function DoubleValue(CobblemonNPCUtilsAPI.countDefinedItem(player, params.getString(0)))
-            }
-            map["take_utils_item"] = Function { params -> // q.player.take_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.takeDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
-            }
+        PlayerMoLangFunctions.custom.add { player ->
+            mapOf(
+                // Item Functions!
+                "give_utils_item" to { params: MoParams -> // q.player.give_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
+                    DoubleValue(if (CobblemonNPCUtilsAPI.giveDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                },
+                "has_utils_item" to { params: MoParams -> // q.player.has_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
+                    DoubleValue(if (CobblemonNPCUtilsAPI.hasDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                },
+                "count_utils_item" to { params -> // q.player.check_utils_item("<ITEM_DEF_ID>")
+                    DoubleValue(CobblemonNPCUtilsAPI.countDefinedItem(player, params.getString(0)))
+                },
+                "take_utils_item" to { params -> // q.player.take_utils_item("<ITEM_DEF_ID>"[, <AMOUNT>])
+                    DoubleValue(if (CobblemonNPCUtilsAPI.takeDefinedItem(player, params.getString(0), params.getIntOrNull(1))) 1.0 else 0.0)
+                },
 
-            map["give_item"] = Function { params -> // q.player.give_item("<ITEM_DEF>"[, <AMOUNT>, <SHOULD_DROP>])
-                return@Function DoubleValue(if (GenericItemUtils.giveGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
-            }
-            map["has_item"] = Function { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
-                return@Function DoubleValue(if (GenericItemUtils.hasGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
-            }
-            map["count_item"] = Function { params -> // q.player.count_item("<ITEM_DEF>"[, <STRICT>])
-                return@Function DoubleValue(GenericItemUtils.countGenericItem(player, params.getString(0), params.getBooleanOrNull(1) ?: false))
-            }
-            map["take_item"] = Function { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
-                return@Function DoubleValue(if (GenericItemUtils.takeGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
-            }
+                "give_item" to { params -> // q.player.give_item("<ITEM_DEF>"[, <AMOUNT>, <SHOULD_DROP>])
+                    DoubleValue(if (GenericItemUtils.giveGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
+                },
+                "has_item" to { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
+                    DoubleValue(if (GenericItemUtils.hasGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
+                },
+                "count_item" to { params -> // q.player.count_item("<ITEM_DEF>"[, <STRICT>])
+                    DoubleValue(GenericItemUtils.countGenericItem(player, params.getString(0), params.getBooleanOrNull(1) ?: false))
+                },
+                "take_item" to { params -> // q.player.has_item("<ITEM_DEF>"[, <AMOUNT>, <STRICT>])
+                    DoubleValue(if (GenericItemUtils.takeGenericItem(player, params.getString(0), params.getIntOrNull(1) ?: 1, params.getBooleanOrNull(2) ?: false)) 1.0 else 0.0)
+                },
 
-            // Teleport Functions!
-            map["teleport_utils_location"] = Function { params -> // q.player.teleport_utils_location("<LOCATION_DEF_ID>")
-                return@Function DoubleValue(if (CobblemonNPCUtilsAPI.teleportToLocation(player, params.getString(0))) 1.0 else 0.0)
-            }
+                // Teleport Functions!
+                "teleport_utils_location" to { params -> // q.player.teleport_utils_location("<LOCATION_DEF_ID>")
+                    DoubleValue(if (CobblemonNPCUtilsAPI.teleportToLocation(player, params.getString(0))) 1.0 else 0.0)
+                },
 
-            // Economy Functions!
-            map["deposit_economy"] = Function { params -> // q.player.deposit_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
-                val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
-                val amount = params.getDouble(1)
-                val currency = params.getStringOrNull(2)
+                // Economy Functions!
+                "deposit_economy" to Function@{ params -> // q.player.deposit_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
+                    val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
+                    val amount = params.getDouble(1)
+                    val currency = params.getStringOrNull(2)
 
-                val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
+                    val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
 
-                return@Function DoubleValue(if (service.deposit(player as ServerPlayer, amount, currency ?: "")) 1.0 else 0.0)
-            }
-            map["withdraw_economy"] = Function { params -> // q.player.withdraw_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
-                val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
-                val amount = params.getDouble(1)
-                val currency = params.getStringOrNull(2)
+                    DoubleValue(if (service.deposit(player as ServerPlayer, amount, currency ?: "")) 1.0 else 0.0)
+                },
+                "withdraw_economy" to Function@{ params -> // q.player.withdraw_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
+                    val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
+                    val amount = params.getDouble(1)
+                    val currency = params.getStringOrNull(2)
 
-                val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
+                    val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
 
-                return@Function DoubleValue(if (service.withdraw(player as ServerPlayer, amount, currency ?: "")) 1.0 else 0.0)
-            }
-            map["has_economy"] = Function { params -> // q.player.has_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
-                val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
-                val amount = params.getDouble(1)
-                val currency = params.getStringOrNull(2)
+                    DoubleValue(if (service.withdraw(player as ServerPlayer, amount, currency ?: "")) 1.0 else 0.0)
+                },
+                "has_economy" to Function@{ params -> // q.player.has_economy("<PROVIDER>", <AMOUNT>[, "<CURRENCY:ID>"])
+                    val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
+                    val amount = params.getDouble(1)
+                    val currency = params.getStringOrNull(2)
 
-                val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
+                    val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
 
-                return@Function DoubleValue(if (service.balance(player as ServerPlayer, currency ?: "") >= amount) 1.0 else 0.0)
-            }
-            map["balance_economy"] = Function { params -> // q.player.balance_economy("<PROVIDER>"[, "<CURRENCY:ID>"])
-                val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
-                val currency = params.getStringOrNull(1)
+                    return@Function DoubleValue(if (service.balance(player as ServerPlayer, currency ?: "") >= amount) 1.0 else 0.0)
+                },
+                "balance_economy" to Function@{ params -> // q.player.balance_economy("<PROVIDER>"[, "<CURRENCY:ID>"])
+                    val provider = EconomyType.valueOfAnyCase(params.getString(0)) ?: return@Function DoubleValue(0.0)
+                    val currency = params.getStringOrNull(1)
 
-                val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
+                    val service = CobblemonNPCUtils.INSTANCE.getEconomyService(provider) ?: return@Function DoubleValue(0.0)
 
-                return@Function DoubleValue(service.balance(player as ServerPlayer, currency ?: ""))
-            }
+                    DoubleValue(service.balance(player as ServerPlayer, currency ?: ""))
+                },
 
-            // Placeholders
-            map["parse_placeholders"] = Function { params -> // q.player.parse_placeholders("<STRING>"[, "<SERVICE>"])
-                // Gather an list of services to use, if none are specified, use all in PlaceholderMods
-                val mods = params.getStringOrNull(1)
-                    ?.split(",")
-                    ?.asSequence()
-                    ?.map(String::trim)
-                    ?.filter(String::isNotEmpty)
-                    ?.mapNotNull(PlaceholderMods::valueOfAnyCase)
-                    ?.toList()
-                    ?.takeIf { it.isNotEmpty() }
-                    ?: PlaceholderMods.entries
+                // Placeholders
+                "parse_placeholders" to { params -> // q.player.parse_placeholders("<STRING>"[, "<SERVICE>"])
+                    // Gather an list of services to use, if none are specified, use all in PlaceholderMods
+                    val mods = params.getStringOrNull(1)
+                        ?.split(",")
+                        ?.asSequence()
+                        ?.map(String::trim)
+                        ?.filter(String::isNotEmpty)
+                        ?.mapNotNull(PlaceholderMods::valueOfAnyCase)
+                        ?.toList()
+                        ?.takeIf { it.isNotEmpty() }
+                        ?: PlaceholderMods.entries
 
-                val providers = mods.map(PlaceholderManager::getServiceForType)
-                var value = params.getString(0)
-                providers.forEach { value = it.parsePlaceholders(value, player as ServerPlayer) }
-                StringValue(value)
-            }
-
-            return@add map
+                    val providers = mods.map(PlaceholderManager::getServiceForType)
+                    var value = params.getString(0)
+                    providers.forEach { value = it.parsePlaceholders(value, player as ServerPlayer) }
+                    StringValue(value)
+                }
+            )
         }
     }
 }
